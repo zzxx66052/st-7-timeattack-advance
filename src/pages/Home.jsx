@@ -40,7 +40,7 @@ export default function Home() {
     <>
       <h2>서버통신 투두리스트 by useState</h2>
       <TodoForm fetchData={fetchData} />
-      <TodoList todos={data} fetchData={fetchData} />
+      <TodoList todos={data} fetchData={fetchData} setData={setData} />
     </>
   );
 }

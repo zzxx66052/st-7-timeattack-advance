@@ -1,15 +1,26 @@
+import axios from "axios";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { todoApi } from "../api/todos";
 
-export default function TodoList({ todos, fetchData }) {
+export default function TodoList({ todos, fetchData, setData }) {
   const navigate = useNavigate();
   const handleLike = async ({ id, currentLiked }) => {
+    const previousTodos = [...todos];
     try {
-      await todoApi.patch(`/todos/${id}`, { liked: !currentLiked });
-      await fetchData();
+      setData((prev) =>
+        prev.map((todo) =>
+          todo.id === id ? { ...todo, liked: !todo.liked } : todo,
+        ),
+      );
+      await todoApi.patch(`/todos/${id}`, {
+        liked: !currentLiked,
+      });
     } catch (err) {
       console.error(err);
+      setData(previousTodos);
+    } finally {
+      await fetchData();
     }
   };
   return (
