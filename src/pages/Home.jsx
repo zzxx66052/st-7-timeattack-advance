@@ -5,6 +5,7 @@ import TodoForm from "../components/TodoForm";
 import TodoList from "../components/TodoList";
 
 export default function Home() {
+  // TODO: useQuery 로 리팩터링 하세요.
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState([]);

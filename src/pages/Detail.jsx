@@ -7,6 +7,8 @@ export default function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // TODO: useMutation 으로 리팩터링 하세요.
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
