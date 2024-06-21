@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { todoApi } from "../api/todos";
 import TodoForm from "../components/TodoForm";
 import TodoList from "../components/TodoList";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -39,7 +40,7 @@ export default function Home() {
     <>
       <h2>서버통신 투두리스트 by useState</h2>
       <TodoForm fetchData={fetchData} />
-      <TodoList todos={data} />
+      <TodoList todos={data} fetchData={fetchData} />
     </>
   );
 }
