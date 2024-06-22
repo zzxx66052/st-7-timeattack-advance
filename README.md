@@ -1,8 +1,4 @@
-# React + Vite
+# 내배캠 5기 스탠다드반 심화주차 타임어택
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- "yarn json" 으로 먼저 json-server 켜주세요.
+- Tanstack Query 의 기본적인 이해도를 확인할 수 있는 리팩터링 문제입니다.
