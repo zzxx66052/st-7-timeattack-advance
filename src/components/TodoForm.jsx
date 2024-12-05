@@ -5,7 +5,8 @@ export default function TodoForm({ fetchData }) {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
 
-  // TODO: useMutation 으로 리팩터링 하세요.
+  // TODO: 필수: useMutation 으로 리팩터링 하세요.
+  // TODO: 선택: useMutation 으로 리팩터링 후, useTodoMutation 커스텀훅으로 정리해 보세요.
   const handleAddTodo = async (e) => {
     e.preventDefault();
     setTitle("");
