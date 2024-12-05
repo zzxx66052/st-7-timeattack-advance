@@ -5,6 +5,7 @@ import { todoApi } from "../api/todos";
 
 export default function TodoList() {
   const navigate = useNavigate();
+  // TODO: 선택: useQuery 를 useTodosQuery 커스텀훅으로 정리해 보세요.
   const {
     data: todos,
     error,
@@ -18,7 +19,8 @@ export default function TodoList() {
     },
   });
 
-  // TODO: 아래 handleLike 로 구현되어 있는 부분을 useMutation 으로 리팩터링 해보세요. 모든 기능은 동일하게 동작해야 합니다.
+  // TODO: 필수: 아래 handleLike 로 구현되어 있는 부분을 useMutation 으로 리팩터링 해보세요. 모든 기능은 동일하게 동작해야 합니다.
+  // TODO: 선택: useMutation 으로 리팩터링 후, useTodoMutation 커스텀훅으로 정리해 보세요.
   const queryClient = useQueryClient();
   const handleLike = async (id, currentLiked) => {
     const previousTodos = [...todos];
