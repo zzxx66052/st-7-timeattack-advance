@@ -7,7 +7,8 @@ export default function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // TODO: useQuery 로 리팩터링 하세요.
+  // TODO: 필수: useQuery 로 리팩터링 하세요.
+  // TODO: 선택: useQuery 로 리팩터링 후, useTodoQuery 커스텀훅으로 정리해 보세요.
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
