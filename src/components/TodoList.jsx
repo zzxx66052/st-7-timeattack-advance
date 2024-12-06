@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { todoApi } from "../api/todos";
@@ -10,7 +10,6 @@ export default function TodoList() {
     data: todos,
     error,
     isPending,
-    refetch,
   } = useQuery({
     queryKey: ["todos"],
     queryFn: async () => {
@@ -22,24 +21,31 @@ export default function TodoList() {
   // TODO: 필수: 아래 handleLike 로 구현되어 있는 부분을 useMutation 으로 리팩터링 해보세요. 모든 기능은 동일하게 동작해야 합니다.
   // TODO: 선택: useMutation 으로 리팩터링 후, useTodoMutation 커스텀훅으로 정리해 보세요.
   const queryClient = useQueryClient();
-  const handleLike = async (id, currentLiked) => {
-    const previousTodos = [...todos];
-    try {
-      queryClient.setQueryData(["todos"], (prev) =>
+
+  const { mutate: handleLike } = useMutation({
+    mutationFn: ({ id, currentLiked }) => {
+      todoApi.patch(`/todos/${id}`, { liked: !currentLiked });
+    },
+    onMutate: async ({ id, currentLiked }) => {
+      await queryClient.cancelQueries({ queryKey: ["todos"] });
+
+      const previousTodos = queryClient.getQueryData(["todos"]);
+
+      queryClient.setQueriesData(["todos"], (prev) => {
         prev.map((todo) =>
-          todo.id === id ? { ...todo, liked: !todo.liked } : todo,
-        ),
-      );
-      await todoApi.patch(`/todos/${id}`, {
-        liked: !currentLiked,
+          todo.id === id ? { ...todo, liked: !currentLiked } : todo
+        );
       });
-    } catch (err) {
-      console.error(err);
-      queryClient.setQueryData(["todos"], previousTodos);
-    } finally {
-      refetch();
-    }
-  };
+
+      return { previousTodos };
+    },
+    onError: (_, context) => {
+      queryClient.setQueryData(["todos"], context.previousTodos);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries(["todos"]);
+    },
+  });
 
   if (isPending) {
     return <div style={{ fontSize: 36 }}>로딩중...</div>;
@@ -70,12 +76,16 @@ export default function TodoList() {
             </button>
             {todo.liked ? (
               <FaHeart
-                onClick={() => handleLike(todo.id, todo.liked)}
+                onClick={() =>
+                  handleLike({ id: todo.id, currentLiked: todo.liked })
+                }
                 style={{ cursor: "pointer" }}
               />
             ) : (
               <FaRegHeart
-                onClick={() => handleLike(todo.id, todo.liked)}
+                onClick={() =>
+                  handleLike({ id: todo.id, currentLiked: todo.liked })
+                }
                 style={{ cursor: "pointer" }}
               />
             )}
